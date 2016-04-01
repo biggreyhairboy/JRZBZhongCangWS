@@ -62,7 +62,8 @@ namespace JRZBZhongCangWS
             {
                 WindData wd = windHandle.wsq(inst, "rt_bid1,rt_ask1", "");
                 object getData = wd.getDataByFunc("wsq", false);
-                if (checkError(wd) != 0) return 0;             
+                if (checkError(wd) != 0) 
+                    return 0;             
                 if (getData is object[,])//转化为2维数组
                 {
                     object[,] odata = (object[,])getData;
@@ -106,20 +107,22 @@ namespace JRZBZhongCangWS
                 {
                     object[,] odata = (object[,])getData;
                     if (days <= dayserial[0]) 
-                    {//隔夜
+                    {
+                        //隔夜
                         string rate = odata[0, 0].ToString();
                         return double.Parse(rate);
-
                     }
                     else if (days >= dayserial[7])
-                    {//一年以上
+                    {
+                        //一年以上
                         string rate = odata[0, 7].ToString();
                         return double.Parse(rate);
                     }
                     else
                     {
                         for (int i = 0; i < 7; i++)
-                        {//介于1天与一年之间，通过线性插值进行求解
+                        {
+                            //介于1天与一年之间，通过线性插值进行求解
                             if (days > dayserial[i] && days <= dayserial[i + 1])
                             {
                                 double rate1 = double.Parse(odata[i, 0].ToString());
@@ -157,8 +160,9 @@ namespace JRZBZhongCangWS
             {
                 WindData wd = windHandle.tdayscount(begin, end, "");
                 object getData = wd.getDataByFunc("wsd", false);
-                if (checkError(wd) != 0) return 0; 
-                if (getData is object[,])//转化为2维数组
+                if (checkError(wd) != 0) return 0;
+                //转化为2维数组
+                if (getData is object[,])
                 {
                     object[,] odata = (object[,])getData;
                     string price = odata[0, 0].ToString();

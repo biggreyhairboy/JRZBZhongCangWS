@@ -8,14 +8,8 @@ namespace JRZBZhongCangWS
 {
     class DoCalculate
     {
-        //[DllImport("GBSMGreeks.dll", EntryPoint = "GBSMTGreeks")]
-        //public static extern int GBSMGreeks(string FCtype,double AssetPrice,string OptSpec, double Strike,double Sigma,
-        //       double Tsigma, double Rate,double Trate,double DivRf,double quan,
-        //       ref double Price1, ref double Delta1,ref double Deltam1,ref double Gamma1 ,
-        //        ref double Gammam1 ,ref double Vega1,ref double Theta1,ref double Theta2 ,ref double Rho1);   
-
         public static int  GBSMGreeks(string FCtype,double AssetPrice,string OptSpec, double Strike,double Sigma, double Tsigma, double Rate,double Trate,double DivRf,int SigmaYearDays, int RateYearDays,
-                    ref double Price, ref double Delta,ref double Deltam,ref double Gamma, ref double Gammam ,ref double Vega,ref double Theta1,ref double Theta2 ,ref double Rho) //计算单位数量的希腊字母值
+                                      ref double Price, ref double Delta,ref double Deltam,ref double Gamma, ref double Gammam ,ref double Vega,ref double Theta1,ref double Theta2 ,ref double Rho) //计算单位数量的希腊字母值
         {
             double S = AssetPrice;
             double X = Strike;
@@ -36,6 +30,7 @@ namespace JRZBZhongCangWS
             {//'The Merton (1973) stock option model with continuous dividend yield q: b=r-q
                 b = r - q;
             }
+            //目前主要使用这种结算方式
             if (FCtype.Equals("F") || FCtype.Equals("Black"))
             {// 'The Black (1976) futures option model: b=0
                 b=0.0;
@@ -64,6 +59,7 @@ namespace JRZBZhongCangWS
                 Ttheta1 = (b - r) * S * Math.Exp((b - r) * T1) * calculate.normcdf(d1) + r * X * Math.Exp(-r * T1) * calculate.normcdf(d2);
                 Ttheta2 = S * Math.Exp((b - r) * T1) * calculate.normpdf(d1) * sig / (2 * Math.Sqrt(T2));              
             }
+            //中仓保价业务是卖出看跌
             else if (OptSpec.Equals("put"))
             {//卖出
                 Tprice = X * Math.Exp((- r) * T1) * calculate.normcdf(-d2) - S* Math.Exp((b-r) * T1) * calculate.normcdf(-d1);

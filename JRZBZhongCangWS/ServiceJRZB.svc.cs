@@ -17,10 +17,22 @@ namespace JRZBZhongCangWS
             return 3333.0;
         }
 
+        public double GetSymbolPrice(string symbol)
+        {
+            double p = WindInstance.getLastPrice(symbol);
+            return p;
+        }
+
+        public double GetSymbolsPrices(string symbols)
+        {
+            //todo
+            return 0;
+        }
+
         public double GetOptionPriceMultiple(string begindate, string enddate, double percent, double quantity)
         {
 
-            PriceControler pc = new PriceControler(begindate, enddate, percent, quantity);
+            PriceControler pc = new PriceControler(begindate, enddate, percent, (int)quantity);
             return pc.calculate();
             return 3000;            
         }

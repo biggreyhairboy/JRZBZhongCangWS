@@ -21,6 +21,12 @@ namespace JRZBZhongCangWS
         [OperationContract]
         double GetOptionPriceMultiple(string begindate, string enddate, double percent, double quantity);
 
+        [OperationContract]
+        double GetSymbolPrice(string symbol);
+
+        [OperationContract]
+        double GetSymbolsPrices(string symbols);//todo 预留接口，一次拿多个报价
+
     }
 
 
