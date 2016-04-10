@@ -12,7 +12,8 @@ namespace JRZBZhongCangWS
     [ServiceContract]
     public interface IServiceJRZB
     {
-        [WebGet(UriTemplate = "Task/Json", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        //[WebGet(UriTemplate = "Task/Json", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
         OptionPrice GetOptionPrice(OptionParameters parameters);
         // TODO: Add your service operations here
         [OperationContract]
@@ -26,6 +27,9 @@ namespace JRZBZhongCangWS
 
         [OperationContract]
         double GetSymbolsPrices(string symbols);//todo 预留接口，一次拿多个报价
+
+        [OperationContract]
+        double GetSettlementPrice(string symbols); //拿结算价格
 
     }
 
