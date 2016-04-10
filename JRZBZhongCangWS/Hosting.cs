@@ -24,6 +24,7 @@ namespace JRZBZhongCangWS
                     //behavior.HttpGetUrl = new Uri("http://localhost:9091/JRZBZhongCangWS/metadata");
                     //host.Description.Behaviors.Add(behavior);
                 //}
+                //为什么不能通过上面这种方式来进行呢？
 
                 host.Opened += delegate
                 {
