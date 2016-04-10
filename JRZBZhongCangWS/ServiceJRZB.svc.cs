@@ -14,6 +14,7 @@ namespace JRZBZhongCangWS
     {
         public double TestGetPrice()
         {
+            Console.WriteLine("test getprice");
             return 3333.0;
         }
 
@@ -44,6 +45,11 @@ namespace JRZBZhongCangWS
             OptionPrice op = new OptionPrice(20);
             op.OPtionPrice = 33.0;
             return op;
+        }
+
+        public double GetSettlementPrice(string symbols)
+        {
+            return 3340;
         }
     }
 }

@@ -13,17 +13,17 @@ namespace JRZBZhongCangWS
     {
         public static void Main(string[] args)
         {
-            
-            using(ServiceHost host = new ServiceHost(typeof(ServiceJRZB)))
+            Uri baseaddress = new Uri("http://127.0.0.1:9091/JRZBZhongCangWS");
+            using (ServiceHost host = new ServiceHost(typeof(JRZBZhongCangWS.ServiceJRZB), baseaddress))
             {
-                host.AddServiceEndpoint(typeof(IServiceJRZB), new WSHttpBinding(), "http://127.0.0.1:9092/JRZBZhongCangWS");
-                if(host.Description.Behaviors.Find<ServiceMetadataBehavior>() == null)
-                {
-                    ServiceMetadataBehavior behavior = new ServiceMetadataBehavior();
-                    behavior.HttpGetEnabled = true;
-                    behavior.HttpGetUrl = new Uri("http://localhost:9091/JRZBZhongCangWS/metadata");
-                    host.Description.Behaviors.Add(behavior);
-                }
+               // host.AddServiceEndpoint(typeof(IServiceJRZB), new WSHttpBinding(), "http://127.0.0.1:9091/JRZBZhongCangWS");
+                //if(host.Description.Behaviors.Find<ServiceMetadataBehavior>() == null)
+                //{
+                    //ServiceMetadataBehavior behavior = new ServiceMetadataBehavior();
+                    //behavior.HttpGetEnabled = true;
+                    //behavior.HttpGetUrl = new Uri("http://localhost:9091/JRZBZhongCangWS/metadata");
+                    //host.Description.Behaviors.Add(behavior);
+                //}
 
                 host.Opened += delegate
                 {
