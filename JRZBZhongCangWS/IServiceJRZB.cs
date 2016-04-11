@@ -12,10 +12,11 @@ namespace JRZBZhongCangWS
     [ServiceContract]
     public interface IServiceJRZB
     {
-        //[WebGet(UriTemplate = "Task/Json", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [WebGet(UriTemplate = "Task/Json", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         OptionPrice GetOptionPrice(OptionParameters parameters);
         // TODO: Add your service operations here
+        [WebGet(UriTemplate = "Task/Json", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         double TestGetPrice();
 
