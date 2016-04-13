@@ -21,16 +21,24 @@ namespace JRZBZhongCangWS
         double TestGetPrice();
 
         [OperationContract]
-        double GetOptionPriceMultiple(string begindate, string enddate, double percent, double quantity);
+        double GetOptionPriceMultiple(string symbol, double strikeprice, double hedgeprice, int month, string begindate, string enddate, double percent, double quantity);
 
         [OperationContract]
-        double GetSymbolPrice(string symbol);
+        double GetSymbolsPrices();//todo 预留接口，一次拿多个报价
 
         [OperationContract]
-        double GetSymbolsPrices(string symbols);//todo 预留接口，一次拿多个报价
+        double GetSymbolPrice(string symbol);//todo 一次拿一个
 
         [OperationContract]
-        double GetSettlementPrice(string symbols); //拿结算价格
+        string GetSettlementPrices(); //拿结算价格
+
+        /// <summary>
+        /// 获取1、3、6个月分别对应的对冲期货品种（结算价的基准品种）
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        string GetSymbolList();
+
 
     }
 

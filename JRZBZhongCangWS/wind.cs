@@ -75,6 +75,25 @@ namespace JRZBZhongCangWS
             return 0;
         }
 
+        public static double GetSettlePrice(string symbol, string date )
+        {
+            double price = 0;
+            if (Login())
+            {
+                string par = string.Format("tradeDate={0};cycle=D", date);//"tradeDate=20160410;cycle=D"
+                WindData wd = windHandle.wss(symbol, "settle", par);
+                object getData = wd.getDataByFunc("wss", false);
+                if (checkError(wd) != 0)
+                    return 0;
+                if (getData is object[,])//转化为2维数组
+                {
+                    object[,] odata = (object[,])getData;
+                    price = double.Parse(odata[0, 0].ToString());
+                }
+            }
+            return price;
+        }
+
         public static double getRate(DateTime beginDate, DateTime endDate)
         {
             TimeSpan span = endDate - beginDate;

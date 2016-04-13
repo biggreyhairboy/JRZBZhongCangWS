@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace JRZBZhongCangWS
 {
@@ -14,6 +15,7 @@ namespace JRZBZhongCangWS
     {
         public double TestGetPrice()
         {
+
             Console.WriteLine("test getprice");
             return 3333.0;
         }
@@ -24,13 +26,13 @@ namespace JRZBZhongCangWS
             return p;
         }
 
-        public double GetSymbolsPrices(string symbols)
+        public double GetSymbolsPrices()
         {
             //todo
-            return 0;
+            return 3330;
         }
 
-        public double GetOptionPriceMultiple(string begindate, string enddate, double percent, double quantity)
+        public double GetOptionPriceMultiple(string symbol, double strikeprice, double hedgeprice, int month, string begindate, string enddate, double percent, double quantity)
         {
 
             PriceControler pc = new PriceControler(begindate, enddate, percent, (int)quantity);
@@ -47,9 +49,89 @@ namespace JRZBZhongCangWS
             return op;
         }
 
-        public double GetSettlementPrice(string symbols)
+        public string GetSettlementPrices()
         {
-            return 3340;
+            List<string> symbols = new List<string>();
+            Dictionary<string, double> settleprices = new Dictionary<string, double>();
+            symbols.Add("AG1606.SHF");
+            symbols.Add("AG1612.SHF");
+            symbols.Add("AG1612.SHF");
+            symbols.Add("CU1607.SHF");
+            symbols.Add("CU1609.SHF");
+            symbols.Add("CU1611.SHF");
+            symbols.Add("ZN1607.SHF");
+            symbols.Add("ZN1609.SHF");
+            symbols.Add("ZN1611.SHF");
+            symbols.Add("AL1607.SHF");
+            symbols.Add("AL1609.SHF");
+            symbols.Add("AL1611.SHF");
+            double temprice = 0;
+            string date = DateTime.Now.Date.ToString("yyyymmdd");
+            date = "20160411";
+            foreach(string s in symbols)
+            {
+                temprice = WindInstance.GetSettlePrice(s, date);
+                if (settleprices.ContainsKey(s))
+                {
+                    continue;
+                }
+                settleprices.Add(s, temprice);
+            }
+            //Dictionary<string, Dictionary<string, double>> rs = new Dictionary<string, Dictionary<string, double>>();
+            //foreach(KeyValuePair<string, double> kvp in settleprices)
+            //{
+            //    if(kvp.Key.ToUpper().StartsWith("AG"))
+            //    {
+            //        rs.Add("AG", settleprices);
+            //        continue;
+            //    }
+            //    else if (kvp.Key.ToUpper().StartsWith("CU"))
+            //    {
+            //        rs.Add("CU", settleprices);
+            //        continue;
+            //    } else if(kvp.Key.ToUpper().StartsWith("ZN"))
+            //    {
+            //        rs.Add("ZN", settleprices);
+            //        continue;
+
+            //    } else if(kvp.Key.ToUpper().StartsWith("AL"))
+            //    {
+            //        rs.Add("AL", settleprices);
+            //        continue;
+            //    }
+            //}           
+            //string json = JsonConvert.SerializeObject(rs);
+            //return WindInstance.GetSettlePrice("AG1606.SHF", "20160410");            
+            string json = JsonConvert.SerializeObject(settleprices);
+            return json;
+        }
+
+        public string GetSymbolList()
+        {
+            Dictionary<string,string> symbols = new Dictionary<string,string>();
+            Dictionary<string, Dictionary<string, string>> sbs = new Dictionary<string, Dictionary<string, string>>();
+            symbols.Add("OneMonth","AG1606.SHF");
+            symbols.Add("ThreeMonths", "AG1612.SHF");
+            symbols.Add("SixMonths", "AG1612.SHF");
+            sbs.Add("AG", new Dictionary<string, string>(symbols));
+            symbols.Clear();
+            symbols.Add("OneMonth", "CU1607.SHF");
+            symbols.Add("ThreeMonths", "CU1609.SHF");
+            symbols.Add("SixMonths", "CU1611.SHF");
+            sbs.Add("CU", new Dictionary<string, string>(symbols));
+            symbols.Clear();
+            symbols.Add("OneMonth", "ZN1607.SHF");
+            symbols.Add("ThreeMonths", "ZN1609.SHF");
+            symbols.Add("SixMonths", "ZN1611.SHF");
+            sbs.Add("ZN", new Dictionary<string, string>(symbols));
+            symbols.Clear();
+            symbols.Add("OneMonth", "AL1607.SHF");
+            symbols.Add("ThreeMonths", "AL1609.SHF");
+            symbols.Add("SixMonths", "AL1611.SHF");
+            sbs.Add("AL", new Dictionary<string, string>(symbols));
+            symbols.Clear();
+            string json = JsonConvert.SerializeObject(sbs);
+            return json;
         }
     }
 }

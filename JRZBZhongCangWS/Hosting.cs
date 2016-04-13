@@ -13,8 +13,8 @@ namespace JRZBZhongCangWS
     {
         public static void Main(string[] args)
         {
-            //Uri baseaddress = new Uri("http://127.0.0.1:9091/JRZBZhongCangWS");
-            Uri baseaddress = new Uri("http://61.141.238.253:9091/JRZBZhongCangWS");
+            Uri baseaddress = new Uri("http://127.0.0.1:9091/JRZBZhongCangWS");
+            //Uri baseaddress = new Uri("http://61.141.238.253:9091/JRZBZhongCangWS");
             using (ServiceHost host = new ServiceHost(typeof(JRZBZhongCangWS.ServiceJRZB), baseaddress))
             {
                // host.AddServiceEndpoint(typeof(IServiceJRZB), new WSHttpBinding(), "http://127.0.0.1:9091/JRZBZhongCangWS");
