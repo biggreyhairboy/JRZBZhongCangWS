@@ -27,6 +27,7 @@ namespace JRZBZhongCangWS
                 //}
                 //为什么不能通过上面这种方式来进行呢？
 
+
                 host.Opened += delegate
                 {
                     Console.WriteLine("服务启动");
