@@ -17,6 +17,7 @@ namespace JRZBZhongCangWS
         private SqlConnection conn ;
         private static List<string> symbols = new List<string>();
         private static Dictionary<string, Dictionary<string, string>> productcollections = new Dictionary<string, Dictionary<string, string>>();
+
         private DBDriver()
         {
             conn = DBConnectionInitialize();
@@ -64,12 +65,8 @@ namespace JRZBZhongCangWS
 
         public void GetSymbols()
         {
-            //Dictionary<string, Dictionary<string, string>> symbolDict = new Dictionary<string, Dictionary<string, string>>();
-            List<string> Products = new List<string>();
             conn.Open();
-            //string sq = "select OneMOnth, ThreeMontsh, SixMonths from ActivelyTradedContract";
-            string sq = "select Category from ActivelyTradedContract";
-            //SqlCommand cmd = new SqlCommand(sq, conn);
+            string sq = "select OneMOnth, ThreeMonths, SixMonths from ActivelyTradedContract";          
             SqlDataAdapter sda = new SqlDataAdapter(sq, conn);
             DataSet ds = new DataSet();
             sda.Fill(ds, "ActivelyTradedContract");
@@ -82,10 +79,32 @@ namespace JRZBZhongCangWS
                 foreach(DataColumn column in ds.Tables["ActivelyTradedContract"].Columns)
                 {
                     Console.WriteLine(row[column, DataRowVersion.Current]);
-                    Products.Add(row[column, DataRowVersion.Current].ToString());
+                    symbols.Add(row[column, DataRowVersion.Current].ToString() + ".SHF");
                 }
             }
-            foreach(string p in Products)
+            conn.Close();          
+        }
+
+        public Dictionary<string, Dictionary<string, string>> GetProductList()
+        {
+            Dictionary<string, Dictionary<string, string>> symbolDict = new Dictionary<string, Dictionary<string, string>>();
+            List<string> Products = new List<string>();
+            conn.Open();
+            string sq = "select Category from ActivelyTradedContract";
+            SqlDataAdapter sda = new SqlDataAdapter(sq, conn);
+            DataSet ds = new DataSet();
+            sda.Fill(ds, "ActivelyTradedContract");
+            //ds.Tables["ActivelyTradedContract"].Columns["Category"]
+
+            foreach (DataRow row in ds.Tables["ActivelyTradedContract"].Rows)
+            {
+                foreach (DataColumn column in ds.Tables["ActivelyTradedContract"].Columns)
+                {
+                    Console.WriteLine(row[column, DataRowVersion.Current]);
+                    Products.Add(row[column, DataRowVersion.Current].ToString() + ".SHF");
+                }
+            }
+            foreach (string p in Products)
             {
                 DataSet rowset = new DataSet();
                 sq = string.Format("{0}{1}{2}", "select OneMOnth, ThreeMonths, SixMonths from ActivelyTradedContract where Category = '", p, "'");
@@ -98,14 +117,15 @@ namespace JRZBZhongCangWS
                 {
                     foreach (DataColumn column in rowset.Tables["ActivelyTradedContract"].Columns)
                     {
-                        Console.WriteLine(row[column, DataRowVersion.Current]);
+                        //Console.WriteLine(row[column, DataRowVersion.Current]);
                         ls.Add(row[column, DataRowVersion.Current].ToString());
                         ps.Add(column.ColumnName, row[column, DataRowVersion.Current].ToString());
                     }
                 }
                 symbolDict.Add(p, ps);
             }
-            
+            conn.Close();
+            return symbolDict;
         }
     }
 }

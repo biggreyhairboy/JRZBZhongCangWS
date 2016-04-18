@@ -13,7 +13,7 @@ namespace JRZBZhongCangWS
     {
         public string GetSymbolsList()
         {
-            Dictionary<string, Dictionary<string, string>> sbs = new Dictionary<string, Dictionary<string, string>>(DBDriver.productcollections);
+            Dictionary<string, Dictionary<string, string>> sbs = new Dictionary<string, Dictionary<string, string>>(DBDriver.GetDBDriverInstance.GetProductList());
             string json = JsonConvert.SerializeObject(sbs);
             return json;
         }
@@ -26,9 +26,22 @@ namespace JRZBZhongCangWS
 
          public string GetSymbolsPrices()
         {
-            //todo
-            
-            return "3330";
+            List<string> symbols = new List<string>(DBDriver.GetDBDriverInstance.SymbolsList);
+            Dictionary<string, double> settleprices = new Dictionary<string, double>();
+            double temprice = 0;
+            string date = DateTime.Now.Date.ToString("yyyyMMdd");
+            //date = "20160412";
+            foreach (string s in symbols)
+            {
+                temprice = GetSymbolPrice(s);
+                if (settleprices.ContainsKey(s))
+                {
+                    continue;
+                }
+                settleprices.Add(s, temprice);
+            }
+            string json = JsonConvert.SerializeObject(settleprices);
+            return json;
         }
 
         public OptionPrice GetOptionPrice(OptionParameters parameters)
@@ -46,6 +59,7 @@ namespace JRZBZhongCangWS
             Dictionary<string, double> settleprices = new Dictionary<string, double>();
             double temprice = 0;
             string date = DateTime.Now.Date.ToString("yyyyMMdd");
+            //date = "20160412";
             foreach(string s in symbols)
             {
                 temprice = WindInstance.GetSettlePrice(s, date);
