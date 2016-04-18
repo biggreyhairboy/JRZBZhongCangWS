@@ -15,7 +15,8 @@ namespace JRZBZhongCangWS
         private static DBDriver dbDriver = null;
         private static readonly object padlock = new object();
         private SqlConnection conn ;
-        private static List<string> symbollist = new List<string>();
+        private static List<string> symbols = new List<string>();
+        private static Dictionary<string, Dictionary<string, string>> productcollections = new Dictionary<string, Dictionary<string, string>>();
         private DBDriver()
         {
             conn = DBConnectionInitialize();
@@ -49,35 +50,62 @@ namespace JRZBZhongCangWS
         {
             get
             {
-                if(symbollist.Count == 0)
+                if(symbols.Count == 0)
                 {
                     GetSymbols();
-                    return symbollist;
+                    return symbols;
                 }
                 else
                 {
-                    return symbollist;
+                    return symbols;
                 }
             }
         }
 
         public void GetSymbols()
         {
+            //Dictionary<string, Dictionary<string, string>> symbolDict = new Dictionary<string, Dictionary<string, string>>();
+            List<string> Products = new List<string>();
             conn.Open();
-            string sq = "select OneMOnth, ThreeMonth, SixMonth from ActivelyTradedContract";
-            SqlCommand cmd = new SqlCommand(sq, conn);
+            //string sq = "select OneMOnth, ThreeMontsh, SixMonths from ActivelyTradedContract";
+            string sq = "select Category from ActivelyTradedContract";
+            //SqlCommand cmd = new SqlCommand(sq, conn);
             SqlDataAdapter sda = new SqlDataAdapter(sq, conn);
             DataSet ds = new DataSet();
             sda.Fill(ds, "ActivelyTradedContract");
+            //ds.Tables["ActivelyTradedContract"].Columns["Category"]
+            
             
             foreach(DataRow row in ds.Tables["ActivelyTradedContract"].Rows)
             {
+                
                 foreach(DataColumn column in ds.Tables["ActivelyTradedContract"].Columns)
                 {
                     Console.WriteLine(row[column, DataRowVersion.Current]);
-                    symbollist.Add(row[column, DataRowVersion.Current].ToString());
+                    Products.Add(row[column, DataRowVersion.Current].ToString());
                 }
             }
+            foreach(string p in Products)
+            {
+                DataSet rowset = new DataSet();
+                sq = string.Format("{0}{1}{2}", "select OneMOnth, ThreeMonths, SixMonths from ActivelyTradedContract where Category = '", p, "'");
+                //SqlDataAdapter sda01 = new SqlDataAdapter(sq, conn);
+                sda = new SqlDataAdapter(sq, conn);
+                sda.Fill(rowset, "ActivelyTradedContract");
+                Dictionary<string, string> ps = new Dictionary<string, string>();
+                List<string> ls = new List<string>();
+                foreach (DataRow row in rowset.Tables["ActivelyTradedContract"].Rows)
+                {
+                    foreach (DataColumn column in rowset.Tables["ActivelyTradedContract"].Columns)
+                    {
+                        Console.WriteLine(row[column, DataRowVersion.Current]);
+                        ls.Add(row[column, DataRowVersion.Current].ToString());
+                        ps.Add(column.ColumnName, row[column, DataRowVersion.Current].ToString());
+                    }
+                }
+                symbolDict.Add(p, ps);
+            }
+            
         }
     }
 }

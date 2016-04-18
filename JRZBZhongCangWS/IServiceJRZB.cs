@@ -12,34 +12,54 @@ namespace JRZBZhongCangWS
     [ServiceContract]
     public interface IServiceJRZB
     {
+        /// <summary>
+        /// 获取1、3、6个月分别对应的对冲期货品种（结算价的基准品种）
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        string GetSymbolsList();
+
+        /// <summary>
+        /// 获取单个期货产品的报价
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        [OperationContract]
+        double GetSymbolPrice(string symbol);//todo 一次拿一个
+
+        /// <summary>
+        /// 获取所有在GetSymbollist得到的期货产品的价格（减少接口的轮询压力）
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        string GetSymbolsPrices();//todo 预留接口，一次拿多个报价
+
+        /// <summary>
+        /// 根据参数获取期权报价
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         [WebGet(UriTemplate = "Task/Json", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         OptionPrice GetOptionPrice(OptionParameters parameters);
-        // TODO: Add your service operations here
+
+        /// <summary>
+        /// 拿结算价格
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        string GetSettlementPrices(); 
+
+        /// <summary>
+        /// 用于测试的接口
+        /// </summary>
+        /// <returns></returns>
         [WebGet(UriTemplate = "Task/Json", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         double TestGetPrice();
 
         [OperationContract]
         double GetOptionPriceMultiple(string symbol, double strikeprice, double hedgeprice, int month, string begindate, string enddate, double percent, double quantity);
-
-        [OperationContract]
-        string GetSymbolsPrices();//todo 预留接口，一次拿多个报价
-
-        [OperationContract]
-        double GetSymbolPrice(string symbol);//todo 一次拿一个
-
-        [OperationContract]
-        string GetSettlementPrices(); //拿结算价格
-
-        /// <summary>
-        /// 获取1、3、6个月分别对应的对冲期货品种（结算价的基准品种）
-        /// </summary>
-        /// <returns></returns>
-        [OperationContract]
-        string GetSymbolList();
-
-
     }
 
 
