@@ -24,7 +24,7 @@ namespace JRZBZhongCangWS
         double GetOptionPriceMultiple(string symbol, double strikeprice, double hedgeprice, int month, string begindate, string enddate, double percent, double quantity);
 
         [OperationContract]
-        double GetSymbolsPrices();//todo 预留接口，一次拿多个报价
+        string GetSymbolsPrices();//todo 预留接口，一次拿多个报价
 
         [OperationContract]
         double GetSymbolPrice(string symbol);//todo 一次拿一个

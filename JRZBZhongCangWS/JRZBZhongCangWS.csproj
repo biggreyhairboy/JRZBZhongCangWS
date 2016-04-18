@@ -70,6 +70,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBDriver.cs" />
     <Compile Include="DoCalculate.cs" />
     <Compile Include="Hosting.cs" />
     <Compile Include="PriceControler.cs" />

@@ -15,7 +15,8 @@ namespace JRZBZhongCangWS
     {
         public double TestGetPrice()
         {
-
+            //DBDriver.GetDBDriverInstance.GetSymbols();
+            Console.WriteLine(DBDriver.GetDBDriverInstance.SymbolsList);
             Console.WriteLine("test getprice");
             return 3333.0;
         }
@@ -26,10 +27,11 @@ namespace JRZBZhongCangWS
             return p;
         }
 
-        public double GetSymbolsPrices()
+         public string GetSymbolsPrices()
         {
             //todo
-            return 3330;
+            
+            return "3330";
         }
 
         public double GetOptionPriceMultiple(string symbol, double strikeprice, double hedgeprice, int month, string begindate, string enddate, double percent, double quantity)
@@ -51,20 +53,20 @@ namespace JRZBZhongCangWS
 
         public string GetSettlementPrices()
         {
-            List<string> symbols = new List<string>();
+            List<string> symbols = new List<string>(DBDriver.GetDBDriverInstance.SymbolsList);
             Dictionary<string, double> settleprices = new Dictionary<string, double>();
-            symbols.Add("AG1606.SHF");
-            symbols.Add("AG1612.SHF");
-            symbols.Add("AG1612.SHF");
-            symbols.Add("CU1607.SHF");
-            symbols.Add("CU1609.SHF");
-            symbols.Add("CU1611.SHF");
-            symbols.Add("ZN1607.SHF");
-            symbols.Add("ZN1609.SHF");
-            symbols.Add("ZN1611.SHF");
-            symbols.Add("AL1607.SHF");
-            symbols.Add("AL1609.SHF");
-            symbols.Add("AL1611.SHF");
+            //symbols.Add("AG1606.SHF");
+            //symbols.Add("AG1612.SHF");
+            //symbols.Add("AG1612.SHF");
+            //symbols.Add("CU1607.SHF");
+            //symbols.Add("CU1609.SHF");
+            //symbols.Add("CU1611.SHF");
+            //symbols.Add("ZN1607.SHF");
+            //symbols.Add("ZN1609.SHF");
+            //symbols.Add("ZN1611.SHF");
+            //symbols.Add("AL1607.SHF");
+            //symbols.Add("AL1609.SHF");
+            //symbols.Add("AL1611.SHF");
             double temprice = 0;
             string date = DateTime.Now.Date.ToString("yyyymmdd");
             date = "20160411";
