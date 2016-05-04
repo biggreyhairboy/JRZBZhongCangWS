@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -6,6 +7,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace JRZBZhongCangWS
 {
@@ -13,8 +15,13 @@ namespace JRZBZhongCangWS
     {
         public string GetSymbolsList()
         {
+            Hashtable ht = new Hashtable();
             Dictionary<string, Dictionary<string, string>> sbs = new Dictionary<string, Dictionary<string, string>>(DBDriver.GetDBDriverInstance.GetProductList());
-            string json = JsonConvert.SerializeObject(sbs);
+            //string sbs_json = JsonConvert.SerializeObject(sbs);
+            Dictionary<string, string> d = new Dictionary<string, string>();
+            ht.Add("Symbols", sbs);       
+            ht.Add("date", DateTime.Now.Date.ToString("yyyyMMdd"));
+            string json = JsonConvert.SerializeObject(ht);
             return json;
         }
 
@@ -28,7 +35,8 @@ namespace JRZBZhongCangWS
         {
             List<string> symbols = new List<string>(DBDriver.GetDBDriverInstance.SymbolsList);
             Dictionary<string, double> settleprices = new Dictionary<string, double>();
-            double temprice = 0;
+            Hashtable ht = new Hashtable();
+            double temprice  = 0;
             string date = DateTime.Now.Date.ToString("yyyyMMdd");
             //date = "20160412";
             foreach (string s in symbols)
@@ -39,9 +47,12 @@ namespace JRZBZhongCangWS
                     continue;
                 }
                 settleprices.Add(s, temprice);
+                ht.Add(s, temprice);
             }
+            ht.Add("time", DateTime.Now.ToString("yyyyMMdd-hh:mm:ss"));
             string json = JsonConvert.SerializeObject(settleprices);
-            return json;
+            string str_json = JsonConvert.SerializeObject(ht);
+            return str_json;
         }
 
         public OptionPrice GetOptionPrice(OptionParameters parameters)
@@ -57,9 +68,10 @@ namespace JRZBZhongCangWS
         {
             List<string> symbols = new List<string>(DBDriver.GetDBDriverInstance.SymbolsList);
             Dictionary<string, double> settleprices = new Dictionary<string, double>();
+            Hashtable ht = new Hashtable();
             double temprice = 0;
             string date = DateTime.Now.Date.ToString("yyyyMMdd");
-            //date = "20160412";
+            //date = "20160421";
             foreach(string s in symbols)
             {
                 temprice = WindInstance.GetSettlePrice(s, date);
@@ -68,11 +80,15 @@ namespace JRZBZhongCangWS
                     continue;
                 }
                 settleprices.Add(s, temprice);
-            }        
+                ht.Add(s, temprice);
+            }
+            settleprices.Add("date", DateTime.Now.Date.Year * 10000 + DateTime.Now.Month * 100 + DateTime.Now.Date.Day);
             string json = JsonConvert.SerializeObject(settleprices);
+            //JObject jo = new JObject(json);
+            ht.Add("date", DateTime.Now.Date.ToString("yyyyMMdd"));
+            json = JsonConvert.SerializeObject(ht);
             return json;
         }
-
 
         public double TestGetPrice()
         {

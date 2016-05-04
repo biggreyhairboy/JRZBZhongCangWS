@@ -101,7 +101,7 @@ namespace JRZBZhongCangWS
                 foreach (DataColumn column in ds.Tables["ActivelyTradedContract"].Columns)
                 {
                     Console.WriteLine(row[column, DataRowVersion.Current]);
-                    Products.Add(row[column, DataRowVersion.Current].ToString() + ".SHF");
+                    Products.Add(row[column, DataRowVersion.Current].ToString());
                 }
             }
             foreach (string p in Products)
