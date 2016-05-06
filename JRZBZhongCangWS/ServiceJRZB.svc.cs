@@ -11,10 +11,12 @@ using Newtonsoft.Json.Linq;
 
 namespace JRZBZhongCangWS
 {
+    [ServiceBehavior(AddressFilterMode = AddressFilterMode.Any)]
     public class ServiceJRZB : IServiceJRZB
     {
         public string GetSymbolsList()
         {
+            Console.WriteLine("GetSymbolsList");
             Hashtable ht = new Hashtable();
             Dictionary<string, Dictionary<string, string>> sbs = new Dictionary<string, Dictionary<string, string>>(DBDriver.GetDBDriverInstance.GetProductList());
             //string sbs_json = JsonConvert.SerializeObject(sbs);
@@ -27,12 +29,14 @@ namespace JRZBZhongCangWS
 
         public double GetSymbolPrice(string symbol)
         {
+            Console.WriteLine("GetSymbolPrice");
             double p = WindInstance.getLastPrice(symbol);
             return p;
         }
 
          public string GetSymbolsPrices()
         {
+            Console.WriteLine("GetSymbolsPrices");
             List<string> symbols = new List<string>(DBDriver.GetDBDriverInstance.SymbolsList);
             Dictionary<string, double> settleprices = new Dictionary<string, double>();
             Hashtable ht = new Hashtable();
@@ -57,6 +61,7 @@ namespace JRZBZhongCangWS
 
         public OptionPrice GetOptionPrice(OptionParameters parameters)
         {
+            Console.WriteLine("GetOptionPrice");
             OptionParameters parms = new OptionParameters();
             parms = parameters;
             OptionPrice op = new OptionPrice(20);
@@ -66,6 +71,7 @@ namespace JRZBZhongCangWS
 
         public string GetSettlementPrices()
         {
+            Console.WriteLine("GetSettlementPrices");
             List<string> symbols = new List<string>(DBDriver.GetDBDriverInstance.SymbolsList);
             Dictionary<string, double> settleprices = new Dictionary<string, double>();
             Hashtable ht = new Hashtable();
